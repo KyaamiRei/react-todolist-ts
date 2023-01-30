@@ -1,15 +1,13 @@
-type TaskType = {
-  id: number;
-  title: string;
-  isDone: boolean;
-};
+import { FilterValueType, TaskType } from '../App';
 
 type TodoProps = {
   title: string;
   tasks: TaskType[];
+  deleteTask: (id: number) => void;
+  onChangeFilter: (value: FilterValueType) => void;
 };
 
-export const ToDoList = ({ title, tasks }: TodoProps) => {
+export const ToDoList = ({ title, tasks, deleteTask, onChangeFilter }: TodoProps) => {
   return (
     <div>
       <h3>{title}</h3>
@@ -18,20 +16,41 @@ export const ToDoList = ({ title, tasks }: TodoProps) => {
         <button>+</button>
       </div>
       <ul>
-        {tasks.map((item) => (
-          <li id={item.title}>
+        {tasks.map((task) => (
+          <li
+            key={task.id}
+            id={task.title}>
             <input
+              onChange={() => {
+                console.log('click');
+              }}
               type='checkbox'
-              checked={item.isDone}
+              checked={task.isDone}
             />
-            <span>{item.title}</span>
+            <span>{task.title}</span>
+            <button onClick={() => deleteTask(task.id)}>x</button>
           </li>
         ))}
       </ul>
       <div>
-        <button>All</button>
-        <button>ACtive</button>
-        <button>Complited</button>
+        <button
+          onClick={() => {
+            onChangeFilter('all');
+          }}>
+          All
+        </button>
+        <button
+          onClick={() => {
+            onChangeFilter('active');
+          }}>
+          ACtive
+        </button>
+        <button
+          onClick={() => {
+            onChangeFilter('comleted');
+          }}>
+          Complited
+        </button>
       </div>
     </div>
   );
